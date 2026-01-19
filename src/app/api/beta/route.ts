@@ -1,23 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { BetaSignupData } from '@/lib/types'
-import { createClient } from '@supabase/supabase-js'
+import { promises as fs } from 'fs'
+import { join } from 'path'
 
-// Debug logging
-console.log('Environment check:')
-console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'Present' : 'Missing')
-console.log('SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'Present' : 'Missing')
+// File path for storing beta signups
+const DATA_FILE = join(process.cwd(), 'data', 'beta-signups.json')
 
-// Fallback in-memory storage
-const betaSignups: (BetaSignupData & { id: string; created_at: string })[] = []
+// Ensure data directory exists
+async function ensureDataDirectory() {
+  try {
+    await fs.mkdir(join(process.cwd(), 'data'), { recursive: true })
+  } catch (error) {
+    // Directory already exists or other error
+  }
+}
 
-// Supabase client - create with fallback values for build time
-const supabase = createClient(
-  process.env.SUPABASE_URL || 'https://placeholder.supabase.co',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key'
-)
+// Read signups from file
+async function readSignups(): Promise<(BetaSignupData & { id: string; created_at: string })[]> {
+  try {
+    await ensureDataDirectory()
+    const data = await fs.readFile(DATA_FILE, 'utf-8')
+    return JSON.parse(data)
+  } catch (error) {
+    // File doesn't exist or other error, return empty array
+    return []
+  }
+}
 
-// Check if we have real environment variables
-const hasSupabaseConfig = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
+// Write signups to file
+async function writeSignups(signups: (BetaSignupData & { id: string; created_at: string })[]) {
+  try {
+    await ensureDataDirectory()
+    await fs.writeFile(DATA_FILE, JSON.stringify(signups, null, 2), 'utf-8')
+  } catch (error) {
+    console.error('Error writing to file:', error)
+    throw error
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,87 +62,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('✅ Validation passed, attempting Supabase insert...')
+    console.log('✅ Validation passed, attempting file storage...')
 
-    // Insert new signup using Supabase (if available)
-    if (!hasSupabaseConfig) {
-      console.log('❌ Supabase not configured, falling back to in-memory storage')
+    // Read existing signups
+    const existingSignups = await readSignups()
 
-      // Check for duplicate email in memory
-      const existingSignup = betaSignups.find(signup => signup.email === email.trim().toLowerCase())
-      if (existingSignup) {
-        console.log('❌ Duplicate email found in memory')
-        return NextResponse.json(
-          { error: 'This email is already registered for the beta' },
-          { status: 409 }
-        )
-      }
-
-      // Store in memory as fallback
-      const memorySignup = {
-        id: Math.random().toString(36).substring(2),
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        interest: interest,
-        created_at: new Date().toISOString()
-      }
-      betaSignups.push(memorySignup)
-
-      console.log('✅ Stored in memory:', memorySignup)
+    // Check for duplicate email
+    const existingSignup = existingSignups.find(signup => signup.email === email.trim().toLowerCase())
+    if (existingSignup) {
+      console.log('❌ Duplicate email found in file')
       return NextResponse.json(
-        { message: 'Successfully joined beta! (stored locally)', signup: memorySignup },
-        { status: 201 }
+        { error: 'This email is already registered for the beta' },
+        { status: 409 }
       )
     }
 
-    const { data, error } = await supabase
-      .from('beta_signups')
-      .insert([
-        {
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          interest: interest
-        }
-      ])
-      .select()
-
-    console.log('📊 Supabase response:', { data, error })
-
-    if (error) {
-      console.log('❌ Supabase error, falling back to in-memory storage:', error)
-
-      // Check for duplicate email in memory
-      const existingSignup = betaSignups.find(signup => signup.email === email.trim().toLowerCase())
-      if (existingSignup) {
-        console.log('❌ Duplicate email found in memory')
-        return NextResponse.json(
-          { error: 'This email is already registered for the beta' },
-          { status: 409 }
-        )
-      }
-
-      // Store in memory as fallback
-      const memorySignup = {
-        id: Math.random().toString(36).substring(2),
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        interest: interest,
-        created_at: new Date().toISOString()
-      }
-      betaSignups.push(memorySignup)
-
-      console.log('✅ Stored in memory:', memorySignup)
-      return NextResponse.json(
-        { message: 'Successfully joined beta! (stored locally)', signup: memorySignup },
-        { status: 201 }
-      )
+    // Create new signup
+    const newSignup = {
+      id: Math.random().toString(36).substring(2),
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      interest: interest,
+      created_at: new Date().toISOString()
     }
 
-    const signup = data?.[0]
-    console.log('✅ Successfully stored in Supabase:', signup)
+    // Add to existing signups and save
+    const updatedSignups = [...existingSignups, newSignup]
+    await writeSignups(updatedSignups)
+
+    console.log('✅ Successfully stored in file:', newSignup)
 
     return NextResponse.json(
-      { message: 'Successfully joined beta!', signup },
+      { message: 'Successfully joined beta!', signup: newSignup },
       { status: 201 }
     )
   } catch (error: any) {
@@ -138,34 +108,19 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    if (!hasSupabaseConfig) {
-      return NextResponse.json({
-        message: 'Beta signup endpoint is active (memory storage)',
-        totalSignups: betaSignups.length,
-      })
-    }
-
-    const { count, error } = await supabase
-      .from('beta_signups')
-      .select('*', { count: 'exact', head: true })
-
-    if (error) {
-      console.error('Error fetching signup count:', error)
-      return NextResponse.json({
-        message: 'Beta signup endpoint is active',
-        totalSignups: betaSignups.length,
-      })
-    }
+    const signups = await readSignups()
 
     return NextResponse.json({
-      message: 'Beta signup endpoint is active',
-      totalSignups: count || 0,
+      message: 'Beta signup endpoint is active (file storage)',
+      totalSignups: signups.length,
+      signups: signups
     })
   } catch (error) {
-    console.error('Error fetching signup count:', error)
+    console.error('Error fetching signups:', error)
     return NextResponse.json({
       message: 'Beta signup endpoint is active',
-      totalSignups: betaSignups.length,
+      totalSignups: 0,
+      error: 'Could not read signups file'
     })
   }
 }
