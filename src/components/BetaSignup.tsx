@@ -6,11 +6,11 @@ import { BetaSignupData, BetaSignupProps, InterestType, DomainType } from '@/lib
 export default function BetaSignup({ defaultDomain, className = '' }: BetaSignupProps) {
   const getDefaultInterest = (domain?: DomainType): InterestType => {
     switch (domain) {
-      case 'Marine': return 'Marine'
-      case 'Home': return 'Home'
-      case 'Business': return 'Business'
-      case 'Content Creators': return 'Content creation'
-      default: return 'Other'
+      case 'Marine': return 'Personal'
+      case 'Home': return 'Personal'
+      case 'Business': return 'Company'
+      case 'Content Creators': return 'Team'
+      default: return 'Personal'
     }
   }
 
@@ -133,12 +133,9 @@ export default function BetaSignup({ defaultDomain, className = '' }: BetaSignup
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-trovia-blue focus:border-trovia-blue"
           >
-            <option value="Marine">Marine</option>
-            <option value="Home">Home</option>
-            <option value="Business">Business</option>
-            <option value="Content creation">Content creation</option>
-            <option value="Cooking">Cooking</option>
-            <option value="Other">Other</option>
+            <option value="Personal">Personal</option>
+            <option value="Team">Team</option>
+            <option value="Company">Company</option>
           </select>
         </div>
 

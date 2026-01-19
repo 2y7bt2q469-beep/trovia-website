@@ -1,4 +1,4 @@
-export type InterestType = 'Marine' | 'Home' | 'Business' | 'Content creation' | 'Cooking' | 'Other'
+export type InterestType = 'Personal' | 'Team' | 'Company'
 
 export type DomainType = 'Marine' | 'Home' | 'Content Creators' | 'Business'
 
