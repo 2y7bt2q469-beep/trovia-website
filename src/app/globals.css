@@ -13,6 +13,32 @@ body {
 }
 
 @layer components {
+  /* Typography Scale */
+  .hero-title {
+    @apply text-[52px] font-semibold text-slate-900 leading-[1.15] tracking-[-0.01em] max-w-3xl mx-auto mb-6;
+  }
+
+  .hero-subhead {
+    @apply text-2xl text-gray-600 font-normal leading-[1.4] max-w-2xl mx-auto;
+  }
+
+  .section-heading {
+    @apply text-3xl font-medium text-slate-900 leading-[1.2];
+  }
+
+  .section-subhead {
+    @apply text-lg text-gray-600 font-normal leading-[1.5] max-w-2xl mx-auto;
+  }
+
+  .step-heading {
+    @apply text-lg font-medium text-slate-900 mb-3;
+  }
+
+  .body-text {
+    @apply text-base text-gray-600 leading-[1.6] max-w-prose;
+  }
+
+  /* Legacy Buttons */
   .btn-primary {
     @apply bg-trovia-blue hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm hover:shadow-md;
   }

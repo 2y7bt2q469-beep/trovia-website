@@ -9,18 +9,18 @@ export default function HomePage() {
     <>
       {/* Hero Section */}
       <section className="bg-white">
-        <div className="max-w-4xl mx-auto px-6 py-8 lg:py-16">
+        <div className="max-w-4xl mx-auto px-6 py-16 lg:py-24">
           <div className="text-center">
-            <h1 className="text-[32px] md:text-[44px] lg:text-[52px] font-semibold text-slate-900 mb-6 leading-[1.15] tracking-[-0.01em] max-w-3xl mx-auto">
+            <h1 className="hero-title">
               <span className="block">When General AI</span>
               <span className="text-blue-700">just isn't enough</span>
             </h1>
 
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="hero-subhead">
               Trovia adds validated domain knowledge, history, and nuance — so the AI tools you already use behave the way you expect.
             </p>
 
-            <div>
+            <div className="mt-8">
               <a href="/beta" className="inline-block bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 px-6 rounded-md transition-colors duration-200">
                 Join the beta
               </a>
@@ -30,69 +30,69 @@ export default function HomePage() {
       </section>
 
 
-      {/* How It Works Section - Google Style */}
-      <section className="bg-white py-8">
+      {/* How It Works Section */}
+      <section className="bg-white py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-8">
-            <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="text-center mb-12">
+            <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
               </svg>
             </div>
-            <h2 className="text-3xl font-medium text-gray-900 mb-3">
+            <h2 className="section-heading">
               How it works
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="section-subhead">
               Add your content, review what's relevant, use with existing tools.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="text-center">
-              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
                 </svg>
               </div>
-              <h3 className="text-lg font-normal text-gray-900 mb-2">Upload</h3>
-              <p className="text-gray-600">Add documents, notes, images, and records</p>
+              <h3 className="step-heading">Upload</h3>
+              <p className="body-text">Add documents, notes, images, and records</p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
-              <h3 className="text-lg font-normal text-gray-900 mb-2">Review</h3>
-              <p className="text-gray-600">Validate and approve what gets used</p>
+              <h3 className="step-heading">Review</h3>
+              <p className="body-text">Validate and approve what gets used</p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
                 </svg>
               </div>
-              <h3 className="text-lg font-normal text-gray-900 mb-2">Connect</h3>
-              <p className="text-gray-600">Access through your existing workflow</p>
+              <h3 className="step-heading">Connect</h3>
+              <p className="body-text">Access through your existing workflow</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Compatible Section */}
-      <section className="bg-white py-8">
+      <section className="bg-white py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
             </svg>
           </div>
-          <h2 className="text-3xl font-medium text-gray-900 mb-4">
+          <h2 className="section-heading mb-4">
             Works with your existing tools
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+          <p className="section-subhead mb-12">
             Trovia holds validated, domain-specific knowledge. Your AI tools use it wherever they already work.
           </p>
 
@@ -139,13 +139,13 @@ export default function HomePage() {
 
 
 
-      {/* Final CTA Section - Google Style */}
-      <section className="bg-white py-8">
+      {/* Final CTA Section */}
+      <section className="bg-white py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-medium text-gray-900 mb-4">
+          <h2 className="section-heading mb-4">
             Ready to get started?
           </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="section-subhead mb-8">
             Join the beta and start adding context to AI today.
           </p>
           <div className="flex justify-center">
