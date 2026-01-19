@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Trovia - Capture, grow, and share expertise',
-  description: 'Trovia helps people and businesses capture what they know, improve it with real guidance, and make it accessible where it\'s needed.',
-  keywords: 'expertise, knowledge management, AI assistant, business intelligence',
+  title: 'Trovia - For when general AI just isn\'t enough',
+  description: 'Trovia adds your domain knowledge, history, and nuance that general AI doesn\'t have on its own.',
+  keywords: 'AI, domain expertise, knowledge management, context',
   openGraph: {
-    title: 'Trovia - Capture, grow, and share expertise',
-    description: 'Trovia helps people and businesses capture what they know, improve it with real guidance, and make it accessible where it\'s needed.',
+    title: 'Trovia - For when general AI just isn\'t enough',
+    description: 'Trovia adds your domain knowledge, history, and nuance that general AI doesn\'t have on its own.',
     type: 'website',
   },
 }
@@ -20,18 +20,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-white text-gray-900">
-        <header className="border-b border-gray-200">
-          <div className="container-responsive">
-            <nav className="flex items-center justify-between h-16">
+        <header className="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+          <div className="max-w-6xl mx-auto px-6">
+            <nav className="flex items-center justify-between h-18">
               <div className="flex items-center">
-                <a href="/" className="text-2xl font-bold text-trovia-blue">
-                  Trovia
+                <a href="/" className="flex items-center">
+                  <svg className="w-7 h-7 mr-3 text-blue-700" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                    <path d="M8 11h8M10 15h4" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  <span className="text-xl font-medium text-gray-900 tracking-[-0.01em]">Trovia</span>
                 </a>
               </div>
               <div className="hidden md:flex items-center space-x-8">
-                <a href="#beta-signup" className="btn-primary">
-                  Join the Beta
-                </a>
+              </div>
+
+              {/* Mobile menu button */}
+              <div className="md:hidden">
+                <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </button>
               </div>
             </nav>
           </div>
@@ -41,40 +51,10 @@ export default function RootLayout({
           {children}
         </main>
 
-        <footer className="bg-gray-50 border-t border-gray-200">
-          <div className="container-responsive py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="col-span-1 md:col-span-2">
-                <div className="flex items-center mb-4">
-                  <span className="text-2xl font-bold text-trovia-blue">Trovia</span>
-                </div>
-                <p className="text-gray-600 max-w-md">
-                  Capture, grow, and share expertise. Make knowledge accessible where it's needed most.
-                </p>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Domains</h4>
-                <ul className="space-y-2">
-                  <li><a href="/marine" className="text-gray-600 hover:text-trovia-blue transition-colors">Marine</a></li>
-                  <li><a href="/home" className="text-gray-600 hover:text-trovia-blue transition-colors">Home</a></li>
-                  <li><a href="/creators" className="text-gray-600 hover:text-trovia-blue transition-colors">Creators</a></li>
-                  <li><a href="/business" className="text-gray-600 hover:text-trovia-blue transition-colors">Business</a></li>
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Company</h4>
-                <ul className="space-y-2">
-                  <li><a href="#beta-signup" className="text-gray-600 hover:text-trovia-blue transition-colors">Join Beta</a></li>
-                  <li><a href="/privacy" className="text-gray-600 hover:text-trovia-blue transition-colors">Privacy</a></li>
-                  <li><a href="/terms" className="text-gray-600 hover:text-trovia-blue transition-colors">Terms</a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500">
-              <p>&copy; 2024 Trovia. All rights reserved.</p>
+        <footer className="bg-white border-t border-gray-100">
+          <div className="max-w-6xl mx-auto px-6 py-8">
+            <div className="text-center text-gray-500">
+              <p>&copy; 2025 Trovia.inc. All rights reserved.</p>
             </div>
           </div>
         </footer>
