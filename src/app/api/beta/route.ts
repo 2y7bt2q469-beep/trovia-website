@@ -1,39 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { BetaSignupData } from '@/lib/types'
-import { promises as fs } from 'fs'
-import { join } from 'path'
+import { kv } from '@vercel/kv'
 
-// File path for storing beta signups
-const DATA_FILE = join(process.cwd(), 'data', 'beta-signups.json')
+const SIGNUPS_KEY = 'beta-signups'
 
-// Ensure data directory exists
-async function ensureDataDirectory() {
-  try {
-    await fs.mkdir(join(process.cwd(), 'data'), { recursive: true })
-  } catch (error) {
-    // Directory already exists or other error
-  }
+// Fallback in-memory storage for local development
+let memorySignups: (BetaSignupData & { id: string; created_at: string })[] = []
+
+// Check if KV is available (production) or use memory (local)
+const isKVAvailable = () => {
+  return process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
 }
 
-// Read signups from file
+// Read signups from KV or memory
 async function readSignups(): Promise<(BetaSignupData & { id: string; created_at: string })[]> {
   try {
-    await ensureDataDirectory()
-    const data = await fs.readFile(DATA_FILE, 'utf-8')
-    return JSON.parse(data)
+    if (isKVAvailable()) {
+      const signups = await kv.get<(BetaSignupData & { id: string; created_at: string })[]>(SIGNUPS_KEY)
+      return signups || []
+    } else {
+      // Local development fallback
+      return memorySignups
+    }
   } catch (error) {
-    // File doesn't exist or other error, return empty array
-    return []
+    console.error('Error reading signups:', error)
+    return isKVAvailable() ? [] : memorySignups
   }
 }
 
-// Write signups to file
+// Write signups to KV or memory
 async function writeSignups(signups: (BetaSignupData & { id: string; created_at: string })[]) {
   try {
-    await ensureDataDirectory()
-    await fs.writeFile(DATA_FILE, JSON.stringify(signups, null, 2), 'utf-8')
+    if (isKVAvailable()) {
+      await kv.set(SIGNUPS_KEY, signups)
+    } else {
+      // Local development fallback
+      memorySignups = signups
+    }
   } catch (error) {
-    console.error('Error writing to file:', error)
+    console.error('Error writing signups:', error)
     throw error
   }
 }
@@ -62,7 +67,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('✅ Validation passed, attempting file storage...')
+    console.log('✅ Validation passed, attempting storage...')
 
     // Read existing signups
     const existingSignups = await readSignups()
@@ -70,7 +75,7 @@ export async function POST(request: NextRequest) {
     // Check for duplicate email
     const existingSignup = existingSignups.find(signup => signup.email === email.trim().toLowerCase())
     if (existingSignup) {
-      console.log('❌ Duplicate email found in file')
+      console.log('❌ Duplicate email found')
       return NextResponse.json(
         { error: 'This email is already registered for the beta' },
         { status: 409 }
@@ -90,7 +95,7 @@ export async function POST(request: NextRequest) {
     const updatedSignups = [...existingSignups, newSignup]
     await writeSignups(updatedSignups)
 
-    console.log('✅ Successfully stored in file:', newSignup)
+    console.log('✅ Successfully stored:', newSignup)
 
     return NextResponse.json(
       { message: 'Successfully joined beta!', signup: newSignup },
@@ -109,18 +114,21 @@ export async function POST(request: NextRequest) {
 export async function GET() {
   try {
     const signups = await readSignups()
+    const storageType = isKVAvailable() ? 'KV storage' : 'memory storage'
 
     return NextResponse.json({
-      message: 'Beta signup endpoint is active (file storage)',
+      message: `Beta signup endpoint is active (${storageType})`,
       totalSignups: signups.length,
-      signups: signups
+      signups: signups,
+      storage: storageType
     })
   } catch (error) {
     console.error('Error fetching signups:', error)
     return NextResponse.json({
       message: 'Beta signup endpoint is active',
       totalSignups: 0,
-      error: 'Could not read signups file'
+      error: 'Could not read signups',
+      storage: isKVAvailable() ? 'KV storage (error)' : 'memory storage (error)'
     })
   }
 }
