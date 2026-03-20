@@ -8,7 +8,7 @@ export default function PrivacyPage() {
 
         <div className="prose prose-lg text-gray-600 max-w-none">
           <p className="text-xl leading-relaxed mb-8">
-            Last updated: December 2024
+            Last updated: March 2025
           </p>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-12">Our Commitment</h2>

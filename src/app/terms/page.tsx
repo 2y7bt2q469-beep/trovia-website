@@ -8,14 +8,8 @@ export default function TermsPage() {
 
         <div className="prose prose-lg text-gray-600 max-w-none">
           <p className="text-xl leading-relaxed mb-8">
-            Last updated: December 2024
+            Last updated: March 2025
           </p>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <p className="text-blue-800 font-medium">
-              Note: These are placeholder terms. Full legal terms will be provided before the beta launch.
-            </p>
-          </div>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-6 mt-12">Acceptance of Terms</h2>
           <p className="leading-relaxed mb-6">
@@ -57,7 +51,7 @@ export default function TermsPage() {
 
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mt-12">
             <p className="text-sm text-gray-600">
-              These terms are subject to change. Complete legal terms will be provided before the beta launch.
+              These terms are subject to change. We will notify you of any significant changes by posting the updated terms on this page.
             </p>
           </div>
         </div>
