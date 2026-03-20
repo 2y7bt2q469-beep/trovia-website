@@ -54,6 +54,20 @@ export default function RootLayout({
         <footer className="bg-white border-t border-gray-100">
           <div className="max-w-6xl mx-auto px-6 py-8">
             <div className="text-center text-gray-500">
+              <div className="mb-4 flex flex-wrap justify-center gap-6">
+                <a
+                  href="/terms"
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  Terms & Conditions
+                </a>
+                <a
+                  href="/privacy"
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  Privacy Policy
+                </a>
+              </div>
               <p>&copy; 2025 Trovia.inc. All rights reserved.</p>
             </div>
           </div>
